@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Preço de Venda</title>
+</head>
+<body>
+  <div>
+    <label for="custo">Digite o valor de custo do produto:</label>
+    <input type="number" id="custo">
+  </div>
+  <div>
+    <label for="plataforma">Digite a porcentagem da plataforma (%):</label>
+    <input type="number" id="plataforma">
+  </div>
+  <div>
+    <label for="notaFiscal">Digite a porcentagem da nota fiscal (%):</label>
+    <input type="number" id="notaFiscal">
+  </div>
+  <div>
+    <label for="frete">Digite o valor do frete em R$:</label>
+    <input type="number" id="frete">
+  </div>
+  <div>
+    <label for="lucro">Digite a porcentagem de lucro desejada (%):</label>
+    <input type="number" id="lucro">
+  </div>
+  <button id="calcular">Calcular</button>
+  <div id="resultado"></div>
+
+  <script>
+    document.getElementById('calcular').addEventListener('click', function() {
+      const custo = parseFloat(document.getElementById('custo').value);
+      const plataformaPercentagem = parseFloat(document.getElementById('plataforma').value);
+      const notaFiscalPercentagem = parseFloat(document.getElementById('notaFiscal').value);
+      const frete = parseFloat(document.getElementById('frete').value);
+      const lucroPercentagem = parseFloat(document.getElementById('lucro').value);
+
+      let precoVenda = custo * (1 + lucroPercentagem / 100);
+      let valorPlataforma, valorNotaFiscal, valorFinal;
+
+      do {
+        valorPlataforma = precoVenda * (plataformaPercentagem / 100);
+        valorNotaFiscal = precoVenda * (notaFiscalPercentagem / 100);
+        valorFinal = precoVenda - valorPlataforma - valorNotaFiscal - frete - 3;
+
+        if (valorFinal < custo + (custo * lucroPercentagem / 100)) {
+          precoVenda += 0.01;
+        }
+      } while (valorFinal < custo + (custo * lucroPercentagem / 100));
+
+      document.getElementById('resultado').textContent = `O preço de venda do produto é: R$${precoVenda.toFixed(2)}`;
+    });
+  </script>
+</body>
+</html>
